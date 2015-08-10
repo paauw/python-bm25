@@ -3,11 +3,8 @@ import numpy as np
 import math
 
 # from sklearn.ensemble import RandomForestClassifier
-# from sklearn.svm import SVC
-# c1 = [ 'dit is de eerste text', 'de is de tweede text nog wat info', 'dit is de derde text wat grappig dit henk'];
-# c2 = [ 'dit is de tweede class text', 'jaja wat een uitstekende test', 'jaja dit is lastig zeg'];
-
-# print start[1].split().count('de')
+# c1 = [ 'this is the first text', 'this is the second text and some info', 'this is the third text'];
+# c2 = [ 'this is text for the second class', 'just to test', 'repeating test test test'];
 
 class BM25:
 	def __init__(self, class1, class2):
@@ -25,7 +22,6 @@ class BM25:
 
 		# Build a cache of the IDF's to save time
 		self.getidfs()
-		# self.limitFeatures(1200)
 
 	def df(self, term, clas):
 		return len([a for a in clas if term in a])
@@ -55,11 +51,6 @@ class BM25:
 					((self.N2 - self.df(a, self.class2) + 0.5) * (self.df(a, self.class1) + 0.5))
 			self.idf_dict[a] = math.log(idf)
 
-	def limitFeatures(self, features):
-		most_class1 = sorted(self.features, key=lambda x:self.idf_dict[x])[:int(features/2)]
-		most_class2 = sorted(self.features, key=lambda x:self.idf_dict[x])[-int(features/2):]
-		self.features = most_class1 + most_class2
-
 	def vectorize(self, documents):
 		matrix = []
 		for text in documents:
@@ -69,10 +60,8 @@ class BM25:
 # bm25 = BM25(c1,c2)
 # training = bm25.vectorize(c1 + c2)
 
-# model = RandomForestClassifier(n_estimators = 500)
-# model = SVC(probability=1)
-# model.fit( training, [1,1,1,0,0,0])
-# print bm25.idf_dict
-# print sorted(bm25.features, key=lambda x:bm25.idf_dict[x])
-# print bm25.vector('henk')
-# print model.predict_proba( bm25.vector('henk') ) 
+# model = RandomForestClassifier()
+
+# model.fit( training, [1,1,1,0,0,0] )
+
+# print model.predict_proba( bm25.vector('test') ) 
